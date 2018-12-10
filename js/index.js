@@ -1,19 +1,18 @@
-//var GphApiClient = require('giphy-js-sdk-core');
-//client = GphApiClient("S4FNeAFFA7Szp1CwDeP3naDy4cRlqzsT");
-
 
 var vid = document.getElementById('videoel');
 var vid_width = vid.width;
 var vid_height = vid.height;
 var overlay = document.getElementById('overlay');
 var overlayCC = overlay.getContext('2d');
+let gifs = document.getElementById('gifs');
+let gifArray = [];
+let currentPos = -1;
+let lastTime = new Date();
+const sad = ['sad+mrw', 'cry+mrw', 'reaction+sad+face', 'reaction+sad', 'reaction+cry'];
+const happy = ['reaction+happy','haha+excited','happy+lol','happy+smile','veryfunny', 'reaction+ohshit', 'haha+lmao'];
+const surprised = ['reaction+surprised+shocked','reaction+wow', 'reaction+omg', 'omg+no','surprised+face'];
+const angry = ['angry+mad','reaction+angry+laugh','reaction+pissed','reaction+angry+lol','reaction+mad','angry+hulk'];
 
-fetch("http://api.giphy.com/v1/gifs/random?tag=sad&api_key=S4FNeAFFA7Szp1CwDeP3naDy4cRlqzsT&limit=1")
-    .then(function(response) {
-        return response.json();
-    }).then(function(json) {
-    console.log(json);
-});
 
 /********** check and set up video/webcam **********/
 
@@ -21,6 +20,7 @@ function enablestart() {
     var startbutton = document.getElementById('startbutton');
     startbutton.value = "start";
     startbutton.disabled = null;
+    createGifs();
 }
 
 function adjustVideoProportions() {
@@ -103,16 +103,25 @@ function drawLoop() {
     var er = ec.meanPredict(cp);
     if (er) {
         updateData(er);
+        let highestEmo = null;
         for (var i = 0;i < er.length;i++) {
-            if (er[i].value > 0.5) {
-                searchgif(er[i]);
-                document.getElementById('icon'+(i+1)).style.visibility = 'visible';
-            } else {
-                document.getElementById('icon'+(i+1)).style.visibility = 'hidden';
+            if (highestEmo === null||er[i].value > highestEmo.value){
+                highestEmo = er[i];
             }
+            document.getElementById('icon_'+(er[i].emotion)).style.visibility = 'hidden';
+        }
+
+        if (highestEmo.value > 0.5) {
+            console.log(highestEmo)
+            searchgif(highestEmo);
+            document.getElementById('icon_'+(highestEmo.emotion)).style.visibility = 'visible';
+        } else {
+
         }
     }
 }
+
+
 
 delete emotionModel['disgusted'];
 delete emotionModel['fear'];
@@ -195,34 +204,63 @@ function updateData(data) {
     texts.exit().remove();
 }
 
-/******** stats ********/
-
-stats = new Stats();
-stats.domElement.style.position = 'absolute';
-stats.domElement.style.top = '0px';
-document.getElementById('container').appendChild( stats.domElement );
-
-// update stats on every iteration
-document.addEventListener('clmtrackrIteration', function(event) {
-    stats.update();
-}, false);
-
 
 function searchgif(prediction) {
-    let gifs = document.getElementById('gifs');
-    console.log(prediction);
-    let search = prediction.emotion;
 
-    let url = "http://api.giphy.com/v1/gifs/search?q="+search+"&api_key=S4FNeAFFA7Szp1CwDeP3naDy4cRlqzsT&limit=1"
-    fetch(url)
-        .then(function(response) {
-            return response.json();
-        }).then(function(json) {
-        console.log(json);
-        json.data.forEach((gif) => {
-            let image = document.createElement('img');
-            image.src = gif.images.fixed_height.url;
-            gifs.appendChild(image);
-        })
-    });
+    if (timePassed()){
+
+        //console.log(prediction);
+        let searchArray = selectSearchTerm(prediction);
+        let search = searchArray[Math.floor(Math.random() * searchArray.length)];
+
+
+        /*let url = "http://api.giphy.com/v1/gifs/search?q="+search+"&api_key=S4FNeAFFA7Szp1CwDeP3naDy4cRlqzsT&limit=1";*/
+        let url = "http://api.giphy.com/v1/gifs/random?tag="+search+"d&api_key=S4FNeAFFA7Szp1CwDeP3naDy4cRlqzsT";
+        fetch(url)
+            .then(function(response) {
+                return response.json();
+            }).then(function(json) {
+            //console.log(json);
+            currentPos = (currentPos + 1) % gifArray.length;
+            gifArray.forEach(el => el.style.border = "");
+            gifArray[currentPos].src = json.data.images.fixed_width.url;
+            gifArray[currentPos].style.border = "2px solid #00EEEE";
+        });
+        lastTime = new Date();
+   }
+
+}
+
+function selectSearchTerm(prediction) {
+    switch (prediction.emotion) {
+        case "happy":
+            return happy;
+        case "sad":
+            return sad;
+        case "angry":
+            return angry;
+        case "surprised":
+            return surprised;
+    }
+}
+
+function timePassed() {
+    let currentTime = new Date();
+    //console.log(currentTime.getTime() - lastTime.getTime());
+    return (currentTime.getTime() - lastTime.getTime() > 2000 )
+}
+
+function createGifs() {
+    for (let i = 0; i < 6; i++){
+        let image = document.createElement('img');
+        image.src = "https://via.placeholder.com/200?text=show+us+your+emotions";
+        image.className += " gif";
+        image.addEventListener('click',openModal);
+        gifArray.push(image);
+        gifs.appendChild(image);
+    }
+}
+
+function openModal() {
+    document.getElementById("modal").style.display = "block";
 }
