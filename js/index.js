@@ -224,6 +224,7 @@ function searchgif(prediction) {
             currentPos = (currentPos + 1) % gifArray.length;
             gifArray.forEach(el => el.style.border = "");
             gifArray[currentPos].src = json.data.images.fixed_width.url;
+            gifArray[currentPos].myData.src = json.data.images.original.url;
             gifArray[currentPos].style.border = "2px solid #00EEEE";
         });
         lastTime = new Date();
@@ -255,12 +256,28 @@ function createGifs() {
         let image = document.createElement('img');
         image.src = "https://via.placeholder.com/200?text=show+us+your+emotions";
         image.className += " gif";
-        image.addEventListener('click',openModal);
+        image.addEventListener('click', openModal);
+        image.myData = {
+            src:""
+        };
         gifArray.push(image);
         gifs.appendChild(image);
     }
 }
 
-function openModal() {
-    document.getElementById("modal").style.display = "block";
+function openModal(evt) {
+    let modal = document.getElementById("modal");
+    modal.style.display = "block";
+    let image = document.createElement('img');
+    image.id = "shareGif";
+    image.src = evt.target.myData.src;
+    modal.appendChild(image);
+
+}
+
+function closeModal() {
+    let modal = document.getElementById("modal");
+    let image = document.getElementById("shareGif");
+    modal.removeChild(image);
+    modal.style.display = "none";
 }
