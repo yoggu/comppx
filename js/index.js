@@ -8,6 +8,10 @@ let gifs = document.getElementById('gifs');
 let gifArray = [];
 let currentPos = -1;
 let lastTime = new Date();
+let happyTime = 0;
+let sadTime = 0;
+let surprisedTime = 0;
+let angryTime = 0;
 const sad = ['sad+mrw', 'cry+mrw', 'reaction+sad+face', 'reaction+sad', 'reaction+cry'];
 const happy = ['reaction+happy','haha+excited','happy+lol','happy+smile','veryfunny', 'reaction+ohshit', 'haha+lmao'];
 const surprised = ['reaction+surprised+shocked','reaction+wow', 'reaction+omg', 'omg+no','surprised+face'];
@@ -112,8 +116,11 @@ function drawLoop() {
         }
 
         if (highestEmo.value > 0.5) {
-            console.log(highestEmo)
-            searchgif(highestEmo);
+            //console.log(highestEmo);
+            if (emotionTime(highestEmo) > 20){
+                console.log("searchgif");
+                searchgif(highestEmo);
+            }
             document.getElementById('icon_'+(highestEmo.emotion)).style.visibility = 'visible';
         } else {
 
@@ -147,7 +154,7 @@ var y = d3.scale.linear()
 
 var svg = d3.select("#emotion_chart").append("svg")
     .attr("width", width + margin.left + margin.right)
-    .attr("height", height + margin.top + margin.bottom)
+    .attr("height", height + margin.top + margin.bottom);
 
 svg.selectAll("rect").
 data(emotionData).
@@ -202,6 +209,39 @@ function updateData(data) {
     // exit
     rects.exit().remove();
     texts.exit().remove();
+}
+
+
+function emotionTime(prediction) {
+    switch (prediction.emotion) {
+        case "happy":
+            happyTime += 1;
+            sadTime = 0;
+            angryTime = 0;
+            surprisedTime = 0;
+            return happyTime;
+        case "sad":
+            happyTime = 0;
+            sadTime += 1;
+            angryTime = 0;
+            surprisedTime = 0;
+            return sadTime;
+        case "angry":
+            happyTime = 0;
+            sadTime = 0;
+            angryTime += 1;
+            surprisedTime = 0;
+            return angryTime;
+        case "surprised":
+            happyTime = 0;
+            sadTime = 0;
+            angryTime = 0;
+            surprisedTime += 1;
+            return surprisedTime;
+    }
+
+
+
 }
 
 
@@ -264,6 +304,8 @@ function createGifs() {
         gifs.appendChild(image);
     }
 }
+
+
 
 function openModal(evt) {
     let modal = document.getElementById("modal");
