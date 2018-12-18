@@ -4,7 +4,7 @@ var vid_width = vid.width;
 var vid_height = vid.height;
 var overlay = document.getElementById('overlay');
 var overlayCC = overlay.getContext('2d');
-let gifs = document.getElementById('gifs');
+let gifs = document.getElementById('gif_container');
 let gifArray = [];
 let currentPos = -1;
 let lastTime = new Date();
@@ -21,10 +21,11 @@ const angry = ['angry+mad','reaction+angry+laugh','reaction+pissed','reaction+an
 /********** check and set up video/webcam **********/
 
 function enablestart() {
-    var startbutton = document.getElementById('startbutton');
+/*    var startbutton = document.getElementById('startbutton');
     startbutton.value = "start";
-    startbutton.disabled = null;
+    startbutton.disabled = null;*/
     createGifs();
+    startVideo();
 }
 
 function adjustVideoProportions() {
@@ -93,6 +94,7 @@ function startVideo() {
     trackingStarted = true;
     // start loop to draw face
     drawLoop();
+
 }
 
 function drawLoop() {
@@ -164,7 +166,7 @@ attr("x", function(datum, index) { return x(index); }).
 attr("y", function(datum) { return height - y(datum.value); }).
 attr("height", function(datum) { return y(datum.value); }).
 attr("width", barWidth).
-attr("fill", "#2d578b");
+attr("fill", "#222222");
 
 svg.selectAll("text.labels").
 data(emotionData).
@@ -262,10 +264,10 @@ function searchgif(prediction) {
             }).then(function(json) {
             //console.log(json);
             currentPos = (currentPos + 1) % gifArray.length;
-            gifArray.forEach(el => el.style.border = "");
+            gifArray.forEach(el => el.parentElement.style.border = "");
             gifArray[currentPos].src = json.data.images.fixed_width.url;
             gifArray[currentPos].myData.src = json.data.images.original.url;
-            gifArray[currentPos].style.border = "2px solid #00EEEE";
+            gifArray[currentPos].parentElement.style.border = "1px solid #222222";
         });
         lastTime = new Date();
    }
@@ -293,15 +295,18 @@ function timePassed() {
 
 function createGifs() {
     for (let i = 0; i < 6; i++){
+        let div = document.createElement('div');
+        div.className += " gif_background";
         let image = document.createElement('img');
-        image.src = "https://via.placeholder.com/200?text=show+us+your+emotions";
+        image.src = ""; /*"https://via.placeholder.com/200?text=show+us+your+emotions";*/
         image.className += " gif";
         image.addEventListener('click', openModal);
         image.myData = {
             src:""
         };
+        div.appendChild(image);
         gifArray.push(image);
-        gifs.appendChild(image);
+        gifs.appendChild(div);
     }
 }
 
@@ -309,7 +314,7 @@ function createGifs() {
 
 function openModal(evt) {
     let modal = document.getElementById("modal");
-    modal.style.display = "block";
+    modal.style.display = "grid";
     let image = document.createElement('img');
     image.id = "shareGif";
     image.src = evt.target.myData.src;
