@@ -359,6 +359,8 @@ function closeModal() {
         icon_modal.firstChild.remove();
     }
 
+    let btn = document.getElementById("copy_btn");
+    btn.innerText = "Copy link";
     modal.style.display = "none";
 }
 
