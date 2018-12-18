@@ -262,11 +262,12 @@ function searchgif(prediction) {
             .then(function(response) {
                 return response.json();
             }).then(function(json) {
-            //console.log(json);
+            console.log(json);
             currentPos = (currentPos + 1) % gifArray.length;
             gifArray.forEach(el => el.parentElement.style.border = "");
             gifArray[currentPos].src = json.data.images.fixed_width.url;
             gifArray[currentPos].myData.src = json.data.images.original.url;
+            gifArray[currentPos].myData.emotion = prediction.emotion;
             gifArray[currentPos].parentElement.style.border = "1px solid #222222";
         });
         lastTime = new Date();
@@ -302,7 +303,8 @@ function createGifs() {
         image.className += " gif";
         image.addEventListener('click', openModal);
         image.myData = {
-            src:""
+            src:"",
+            emotion:""
         };
         div.appendChild(image);
         gifArray.push(image);
@@ -314,17 +316,69 @@ function createGifs() {
 
 function openModal(evt) {
     let modal = document.getElementById("modal");
-    modal.style.display = "grid";
+    modal.style.display = "block";
+    let gif_modal = document.getElementById("gif_modal");
     let image = document.createElement('img');
     image.id = "shareGif";
     image.src = evt.target.myData.src;
-    modal.appendChild(image);
+    gif_modal.appendChild(image);
 
+    let icon_modal = document.getElementById("icon_modal");
+    let icon = document.createElement("i");
+    let emotionClass = iconClass(evt.target.myData);
+    icon.className +="far fa-5x";
+    icon.className += " "+emotionClass;
+    icon.id = "icon_big";
+
+    let text = document.createElement("p");
+    text.innerText += "You look "+ evt.target.myData.emotion;
+
+    let link = document.getElementById("link");
+    link.value = filterURL(evt.target.myData.src);
+
+    icon_modal.appendChild(icon);
+    icon_modal.appendChild(text);
+
+}
+
+function filterURL(url) {
+    let pattern = /media\d/;
+    let newURL = url.replace(pattern, "media");
+    console.log(newURL);
+    return newURL;
 }
 
 function closeModal() {
     let modal = document.getElementById("modal");
+    let gif_modal = document.getElementById("gif_modal");
     let image = document.getElementById("shareGif");
-    modal.removeChild(image);
+    gif_modal.removeChild(image);
+
+    let icon_modal = document.getElementById("icon_modal");
+    while (icon_modal.firstChild) {
+        icon_modal.firstChild.remove();
+    }
+
     modal.style.display = "none";
+}
+
+function copyLink() {
+    let link = document.getElementById("link");
+    link.select();
+    document.execCommand('copy');
+
+}
+
+
+function iconClass(prediction) {
+    switch (prediction.emotion) {
+        case "happy":
+            return "fa-laugh-squint";
+        case "sad":
+            return "fa-sad-tear";
+        case "angry":
+            return "fa-angry";
+        case "surprised":
+            return "fa-surprise";
+    }
 }

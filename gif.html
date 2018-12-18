@@ -43,7 +43,20 @@
 			<input class="btn" type="button" value="wait, loading video" disabled="disabled" onclick="startVideo()" id="startbutton"></input>
 		</div>-->
 		<div id="modal">
-			<button onclick="closeModal()"></button>
+			<div id="modal_container">
+				<div id="gif_modal">
+
+				</div>
+				<div id="icon_modal"></div>
+				<div id="share">
+					<input id="link">
+					<a class="copy_btn" onclick="copyLink()"> Copy link </a>
+				</div>
+				<div class="back_btn" onclick="closeModal()">
+					<i class="fas fa-long-arrow-alt-left fa-3x"></i>
+					<p>Back</p>
+				</div>
+			</div>
 		</div>
 		<script src="js/index.js"></script>
 	</body>
