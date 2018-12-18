@@ -366,6 +366,8 @@ function copyLink() {
     let link = document.getElementById("link");
     link.select();
     document.execCommand('copy');
+    let btn = document.getElementById("copy_btn");
+    btn.innerHTML = '<i class="fas fa-check"></i>' +'<p>Copied</p>';
 
 }
 
