@@ -257,7 +257,7 @@ function searchgif(prediction) {
 
 
         /*let url = "http://api.giphy.com/v1/gifs/search?q="+search+"&api_key=S4FNeAFFA7Szp1CwDeP3naDy4cRlqzsT&limit=1";*/
-        let url = "http://api.giphy.com/v1/gifs/random?tag="+search+"d&api_key=S4FNeAFFA7Szp1CwDeP3naDy4cRlqzsT";
+        let url = "https://api.giphy.com/v1/gifs/random?tag="+search+"d&api_key=S4FNeAFFA7Szp1CwDeP3naDy4cRlqzsT";
         fetch(url)
             .then(function(response) {
                 return response.json();
@@ -299,7 +299,7 @@ function createGifs() {
         let div = document.createElement('div');
         div.className += " gif_background";
         let image = document.createElement('img');
-        image.src = ""; /*"https://via.placeholder.com/200?text=show+us+your+emotions";*/
+        image.src = "";
         image.className += " gif";
         image.addEventListener('click', openModal);
         image.myData = {
