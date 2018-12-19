@@ -134,9 +134,12 @@ h2 {
 }
 
 .gif_background {
-    width: 100%;
-    height: 100%;
-    background-color: whitesmoke ;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    width: 210px;
+    height: 210px;
+    background-color:#F6F6F6 ;
     display: flex;
     align-items: center;
 }
@@ -223,6 +226,18 @@ h2 {
 
 .back_btn > p {
     padding: 0 10px;
+}
+
+.yAxis {
+font-family: Montserrat;
+font-style: normal;
+font-weight: 300;
+line-height: normal;
+font-size: 13px;
+text-align: center;
+letter-spacing: 0.3em;
+text-transform: uppercase;
+
 }
 
 

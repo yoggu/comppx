@@ -266,13 +266,13 @@ function searchgif(prediction) {
             if (json.data.images != null) {
                 currentPos = (currentPos + 1) % gifArray.length;
                 gifArray.forEach(el => {
-                    el.parentElement.style.borderBottom = "10px solid #FFFFFF";
+                    el.parentElement.style.borderBottom = "";
                     el.parentElement.style.opacity = "0.4";
                 });
                 gifArray[currentPos].src = json.data.images.fixed_width.url;
                 gifArray[currentPos].myData.src = json.data.images.original.url;
                 gifArray[currentPos].myData.emotion = prediction.emotion;
-                gifArray[currentPos].parentElement.style.borderBottom = "10px solid #222222";
+                gifArray[currentPos].parentElement.style.borderBottom = "5px solid #222222";
                 gifArray[currentPos].parentElement.style.opacity = "1";
             }
 
