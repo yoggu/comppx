@@ -120,7 +120,7 @@ function drawLoop() {
         if (highestEmo.value > 0.5) {
             //console.log(highestEmo);
             if (emotionTime(highestEmo) > 20){
-                console.log("searchgif");
+                //console.log("searchgif");
                 searchgif(highestEmo);
             }
             document.getElementById('icon_'+(highestEmo.emotion)).style.visibility = 'visible';
@@ -254,21 +254,28 @@ function searchgif(prediction) {
         //console.log(prediction);
         let searchArray = selectSearchTerm(prediction);
         let search = searchArray[Math.floor(Math.random() * searchArray.length)];
+        //console.log(search);
 
-
-        /*let url = "http://api.giphy.com/v1/gifs/search?q="+search+"&api_key=S4FNeAFFA7Szp1CwDeP3naDy4cRlqzsT&limit=1";*/
         let url = "https://api.giphy.com/v1/gifs/random?tag="+search+"d&api_key=S4FNeAFFA7Szp1CwDeP3naDy4cRlqzsT";
         fetch(url)
             .then(function(response) {
                 return response.json();
             }).then(function(json) {
             console.log(json);
-            currentPos = (currentPos + 1) % gifArray.length;
-            gifArray.forEach(el => el.parentElement.style.border = "");
-            gifArray[currentPos].src = json.data.images.fixed_width.url;
-            gifArray[currentPos].myData.src = json.data.images.original.url;
-            gifArray[currentPos].myData.emotion = prediction.emotion;
-            gifArray[currentPos].parentElement.style.border = "1px solid #222222";
+
+            if (json.data.images != null) {
+                currentPos = (currentPos + 1) % gifArray.length;
+                gifArray.forEach(el => {
+                    el.parentElement.style.border = "";
+                    el.parentElement.style.opacity = "0.4";
+                });
+                gifArray[currentPos].src = json.data.images.fixed_width.url;
+                gifArray[currentPos].myData.src = json.data.images.original.url;
+                gifArray[currentPos].myData.emotion = prediction.emotion;
+                gifArray[currentPos].parentElement.style.borderBottom = "10px solid #222222";
+                gifArray[currentPos].parentElement.style.opacity = "1";
+            }
+
         });
         lastTime = new Date();
    }
@@ -291,7 +298,7 @@ function selectSearchTerm(prediction) {
 function timePassed() {
     let currentTime = new Date();
     //console.log(currentTime.getTime() - lastTime.getTime());
-    return (currentTime.getTime() - lastTime.getTime() > 2000 )
+    return (currentTime.getTime() - lastTime.getTime() > 2500 )
 }
 
 function createGifs() {
