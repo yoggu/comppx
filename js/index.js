@@ -21,9 +21,6 @@ const angry = ['angry+mad','angry+reaction','pissed+reaction','mad+reaction','an
 /********** check and set up video/webcam **********/
 
 function enablestart() {
-/*    var startbutton = document.getElementById('startbutton');
-    startbutton.value = "start";
-    startbutton.disabled = null;*/
     createGifs();
     startVideo();
 }
@@ -261,7 +258,7 @@ function searchgif(prediction) {
             .then(function(response) {
                 return response.json();
             }).then(function(json) {
-            console.log(json);
+            //console.log(json);
 
             if (json.data.images != null) {
                 currentPos = (currentPos + 1) % gifArray.length;
@@ -351,7 +348,7 @@ function openModal(evt) {
 function filterURL(url) {
     let pattern = /media\d/;
     let newURL = url.replace(pattern, "media");
-    console.log(newURL);
+    //console.log(newURL);
     return newURL;
 }
 
