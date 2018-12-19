@@ -59,10 +59,10 @@ function gumSuccess( stream ) {
 }
 
 function gumFail() {
-    alert("There was some problem trying to fetch video from your webcam. If you have a webcam, please make sure to accept when the browser asks for access to your webcam.");
+    alert("There was some problem trying to fetch video from your webcam.");
 }
 
-navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia;
+navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia || navigator.mediaDevices.getUserMedia;
 window.URL = window.URL || window.webkitURL || window.msURL || window.mozURL;
 
 // check for camerasupport
@@ -266,7 +266,7 @@ function searchgif(prediction) {
             if (json.data.images != null) {
                 currentPos = (currentPos + 1) % gifArray.length;
                 gifArray.forEach(el => {
-                    el.parentElement.style.border = "";
+                    el.parentElement.style.borderBottom = "10px solid #FFFFFF";
                     el.parentElement.style.opacity = "0.4";
                 });
                 gifArray[currentPos].src = json.data.images.fixed_width.url;
