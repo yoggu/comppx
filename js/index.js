@@ -12,10 +12,10 @@ let happyTime = 0;
 let sadTime = 0;
 let surprisedTime = 0;
 let angryTime = 0;
-const sad = ['sad+mrw', 'cry+mrw', 'reaction+sad+face', 'reaction+sad', 'reaction+cry'];
-const happy = ['reaction+happy','haha+excited','happy+lol','happy+smile','veryfunny', 'reaction+ohshit', 'haha+lmao'];
-const surprised = ['reaction+surprised+shocked','reaction+wow', 'reaction+omg', 'omg+no','surprised+face'];
-const angry = ['angry+mad','reaction+angry','reaction+pissed','reaction+angry','reaction+mad','angry+hulk'];
+const sad = ['sad+mrw', 'cry+mrw', 'sad+reaction+face', 'sad+reaction', 'cry+reaction'];
+const happy = ['happy+reaction','haha+excited','happy+lol','happy+smile','veryfunny', 'haha+lmao'];
+const surprised = ['reaction+surprised+shocked','wow+reaction', 'reaction+omg', 'omg+no','surprised+face'];
+const angry = ['angry+mad','angry+reaction','pissed+reaction','mad+reaction','angry+hulk'];
 
 
 /********** check and set up video/webcam **********/
@@ -298,7 +298,7 @@ function selectSearchTerm(prediction) {
 function timePassed() {
     let currentTime = new Date();
     //console.log(currentTime.getTime() - lastTime.getTime());
-    return (currentTime.getTime() - lastTime.getTime() > 3000 )
+    return (currentTime.getTime() - lastTime.getTime() > 2500 )
 }
 
 function createGifs() {
