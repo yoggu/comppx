@@ -13,6 +13,7 @@ body {
     font-size: 16px;
     margin: 0;
     padding: 0;
+    text-transform: uppercase;
 }
 
 
@@ -39,7 +40,7 @@ body {
     grid-template-rows: 1fr 20%;
     grid-template-columns: 1fr;
     display: grid;
-    max-width: 1200px;
+    max-width: 1024px;
     margin-left : auto;
     margin-right : auto;
     height: 100vh;
@@ -66,9 +67,9 @@ body {
     margin-left : auto;
     margin-right : auto;
     display: grid;
-    max-width: 1200px;
+    max-width: 1024px;
     grid-template-rows: 1fr 1fr;
-    grid-template-columns: 1fr minmax(400px, 33%);
+    grid-template-columns: 1fr minmax(400px, 40%);
     grid-template-areas:
         "gif chart"
         "gif video";
@@ -88,8 +89,8 @@ body {
 #gif_container {
     grid-area: gif;
     display: grid;
-    grid-template-columns: repeat(auto-fill,200px);
-    grid-auto-rows: 1fr;
+    grid-template-columns: repeat(auto-fill,220px);
+    grid-auto-rows: minmax(220px,1fr);
     justify-content: center;
     grid-gap: 20px;
 }
@@ -131,6 +132,7 @@ h2 {
 
 .gif {
     cursor: pointer;
+    overflow: hidden;
 }
 
 .gif_background {
@@ -142,11 +144,12 @@ h2 {
     background-color: whitesmoke ;
     display: flex;
     align-items: center;
+    justify-content: center;
 }
 
 #modal {
     display: none;
-    position: fixed;
+    position: absolute;
     background-color: white;
     top: 0;
     left: 0;
@@ -159,7 +162,7 @@ h2 {
     margin-top : 50px;
     margin-left : auto;
     margin-right : auto;
-    max-width: 1200px;
+    max-width: 1024px;
     grid-gap: 20px;
     display: grid;
     grid-template-rows: 2fr 1fr 1fr;
@@ -243,13 +246,12 @@ text-transform: uppercase;
 
 
 
-@media (max-width: 1048px) {
+@media (max-width: 992px) {
     #container {
         margin-top : 10px;
         margin-left : auto;
         margin-right : auto;
         display: grid;
-        max-width: 1200px;
         grid-row-gap: 20px;
         grid-template-rows: 1fr min-content min-content;
         grid-template-columns: 1fr;
@@ -263,7 +265,6 @@ text-transform: uppercase;
         margin-top : 10px;
         margin-left : auto;
         margin-right : auto;
-        max-width: 1200px;
         height: 100%;
         grid-gap: 20px;
         display: grid;
@@ -278,8 +279,19 @@ text-transform: uppercase;
     #gif_container {
         grid-area: gif;
         display: grid;
-        grid-template-columns: repeat(auto-fill, 200px);
-        grid-auto-rows: 1fr;
+        grid-template-columns: repeat(auto-fill, 220px);
+        grid-auto-rows: minmax(220px,1fr);
+        justify-content: center;
+        grid-gap: 20px;
+    }
+}
+
+@media (max-width: 600px) {
+    #gif_container {
+        grid-area: gif;
+        display: grid;
+        grid-template-columns: repeat(auto-fill, 190px);
+        grid-auto-rows: minmax(190px,1fr);
         justify-content: center;
         grid-row-gap: 20px;
         grid-column-gap: 5px;
