@@ -51,6 +51,7 @@ body {
     align-self: center;
     justify-self: center;
     padding: 20px;
+    line-height: 1.5em;
 }
 
 .start_btn {
